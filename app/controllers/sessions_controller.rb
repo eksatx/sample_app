@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-  protect_from_forgery with: :exception
   include SessionsHelper
 
   def new
@@ -9,7 +8,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email].downcase)
     if user && user.authenticate(params[:password])
       sign_in user
-      redirect_to user
+      redirect_back_or user
     else
       flash.now[:error] = 'Invalid email/password combination'
       render 'new'
